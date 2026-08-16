@@ -43,18 +43,27 @@
   /* ---------- Top bar ---------- */
   header.topbar{
     padding: max(14px, env(safe-area-inset-top)) 18px 12px 18px;
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
     background:linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
     border-bottom:1px solid rgba(200,150,44,0.15);
   }
-  .brand{display:flex; align-items:center; gap:10px;}
+  .brand{display:flex; align-items:center; gap:10px; min-width:0;}
   .brand-mark{width:26px;height:26px;flex-shrink:0;}
-  .brand-text{font-family:var(--font-display); font-size:17px; letter-spacing:0.5px; font-weight:700; color:var(--cream);}
+  .brand-text{font-family:var(--font-display); font-size:17px; letter-spacing:0.5px; font-weight:700; color:var(--cream); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .topbar-right{display:flex; align-items:center; gap:8px; flex-shrink:0;}
   .phase-badge{
     font-size:10px; letter-spacing:1.2px; font-weight:700; text-transform:uppercase;
     color:var(--green-soft); background:rgba(62,138,103,0.15); border:1px solid rgba(111,199,154,0.35);
     padding:5px 9px; border-radius:20px; white-space:nowrap;
   }
+  .lang-toggle{
+    display:flex; border:1px solid rgba(200,150,44,0.4); border-radius:20px; overflow:hidden; flex-shrink:0;
+  }
+  .lang-btn{
+    background:none; border:none; color:var(--muted); font-size:10.5px; font-weight:700; padding:5px 9px; cursor:pointer;
+    letter-spacing:0.5px;
+  }
+  .lang-btn.active{background:var(--gold); color:var(--navy-deep);}
 
   /* ---------- Views ---------- */
   main{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:90px;}
@@ -146,31 +155,42 @@
   .phase-tag.P2{background:rgba(200,150,44,0.2); color:var(--gold-soft);}
   .phase-tag.P3{background:rgba(150,160,190,0.2); color:var(--muted);}
 
-  /* ---------- Semaine (log form) ---------- */
+  /* ---------- Semaine (task form + suggestions) ---------- */
   .card{
     background:var(--navy); border:1px solid rgba(200,150,44,0.15); border-radius:16px; padding:18px; margin-bottom:16px;
   }
   label{display:block; font-size:11px; letter-spacing:0.6px; text-transform:uppercase; color:var(--muted); margin:14px 0 6px 0; font-weight:600;}
   label:first-child{margin-top:0;}
-  select, input[type=text], input[type=date], textarea{
+  select, input[type=text], textarea{
     width:100%; background:var(--navy-deep); border:1px solid rgba(200,150,44,0.25); color:var(--cream);
     border-radius:10px; padding:11px 12px; font-size:14px; font-family:var(--font-body); outline:none;
   }
   select:focus, input:focus, textarea:focus{border-color:var(--gold);}
   textarea{resize:vertical; min-height:44px;}
-  .status-row{display:flex; gap:8px; margin-top:6px;}
-  .status-btn{
-    flex:1; padding:11px 0; border-radius:10px; border:1.5px solid rgba(255,255,255,0.12);
-    background:var(--navy-deep); color:var(--muted); font-size:18px; text-align:center; cursor:pointer;
+
+  .chip-group{margin-top:10px;}
+  .chip-group-label{font-size:10px; color:var(--muted); letter-spacing:0.4px; margin-bottom:6px; text-transform:uppercase; font-weight:600;}
+  .chip-scroll{display:flex; gap:7px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch;}
+  .verb-chip{
+    flex-shrink:0; padding:7px 12px; border-radius:20px; font-size:12px; white-space:nowrap; cursor:pointer;
+    background:var(--navy-deep); border:1px solid rgba(200,150,44,0.3); color:var(--cream);
   }
-  .status-btn.selected[data-v="ok"]{border-color:var(--green); background:rgba(62,138,103,0.18); color:var(--green-soft);}
-  .status-btn.selected[data-v="ko"]{border-color:var(--red); background:rgba(192,96,90,0.18); color:#E39A95;}
-  .status-btn.selected[data-v="mid"]{border-color:var(--gold); background:rgba(200,150,44,0.18); color:var(--gold-soft);}
+  .verb-chip:active{background:var(--gold); color:var(--navy-deep); border-color:var(--gold);}
+  .verb-chip .en{font-weight:700;}
+  .verb-chip .sep{color:var(--muted); margin:0 3px;}
+  .verb-chip .fr{color:var(--muted);}
+  .verb-chip:active .fr, .verb-chip:active .sep{color:var(--navy-deep); opacity:0.75;}
+
   .btn-primary{
     width:100%; margin-top:18px; padding:13px 0; border:none; border-radius:12px;
     background:var(--gold); color:var(--navy-deep); font-weight:700; font-size:14px; cursor:pointer;
   }
   .btn-primary:active{opacity:0.85;}
+
+  .today-progress{margin:16px 0 14px 0;}
+  .today-progress .bar-label{display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:5px;}
+  .today-progress .bar-track{height:8px; background:rgba(255,255,255,0.07); border-radius:6px; overflow:hidden;}
+  .today-progress .bar-fill{height:100%; background:linear-gradient(90deg, var(--green), var(--green-soft)); border-radius:6px; transition:width .3s ease;}
 
   .entry-list{display:flex; flex-direction:column; gap:10px;}
   .entry{
@@ -180,12 +200,22 @@
   .entry.ok{border-left-color:var(--green);}
   .entry.ko{border-left-color:var(--red);}
   .entry.mid{border-left-color:var(--gold);}
-  .entry-emoji{font-size:16px; width:22px; text-align:center; flex-shrink:0;}
+  .entry.pending{border-left-color:rgba(255,255,255,0.18);}
+  .entry-emoji{
+    font-size:19px; width:34px; height:34px; text-align:center; flex-shrink:0; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; border-radius:50%;
+    background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.14);
+    transition:transform .1s ease;
+  }
+  .entry-emoji:active{transform:scale(0.88);}
+  .entry.ok .entry-emoji{border-color:var(--green); background:rgba(62,138,103,0.15);}
+  .entry.ko .entry-emoji{border-color:var(--red); background:rgba(192,96,90,0.15);}
+  .entry.mid .entry-emoji{border-color:var(--gold); background:rgba(200,150,44,0.15);}
   .entry-body{flex:1; min-width:0;}
   .entry-text{font-size:13.5px; color:var(--cream); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .entry-meta{font-size:10.5px; color:var(--muted); margin-top:2px;}
   .entry-del{background:none; border:none; color:var(--muted); font-size:18px; padding:4px 6px; cursor:pointer;}
-  .empty-state{text-align:center; padding:40px 20px; color:var(--muted); font-size:13px;}
+  .empty-state{text-align:center; padding:40px 20px; color:var(--muted); font-size:13px; line-height:1.6;}
 
   /* ---------- Journal filters ---------- */
   .filter-row{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; margin-bottom:16px; -webkit-overflow-scrolling:touch;}
@@ -212,10 +242,11 @@
     padding-bottom:env(safe-area-inset-bottom);
   }
   .navbtn{
-    flex:1; background:none; border:none; color:var(--muted); padding:10px 0 8px 0;
-    display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10px; cursor:pointer;
-    font-family:var(--font-body); letter-spacing:0.3px;
+    flex:1; background:none; border:none; color:var(--muted); padding:10px 2px 8px 2px;
+    display:flex; flex-direction:column; align-items:center; gap:3px; font-size:9.5px; cursor:pointer;
+    font-family:var(--font-body); letter-spacing:0.2px; min-width:0;
   }
+  .navbtn span{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
   .navbtn svg{width:22px; height:22px;}
   .navbtn.active{color:var(--gold-soft);}
   .navbtn.active svg{filter:drop-shadow(0 0 6px rgba(200,150,44,0.4));}
@@ -238,46 +269,42 @@
       <svg class="brand-mark" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="#C8962C" stroke-width="1.4" opacity="0.5"/><circle cx="20" cy="20" r="12" fill="none" stroke="#C8962C" stroke-width="1.4" opacity="0.7"/><circle cx="20" cy="20" r="4" fill="#C8962C"/></svg>
       <span class="brand-text">Ma Boussole</span>
     </div>
-    <span class="phase-badge" id="phaseBadge">Phase 1 · 2026-2029</span>
+    <div class="topbar-right">
+      <div class="lang-toggle">
+        <button class="lang-btn" id="langFr" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+      </div>
+      <span class="phase-badge" id="phaseBadge"></span>
+    </div>
   </header>
 
   <main>
     <!-- BOUSSOLE -->
     <section class="view active" id="view-boussole">
-      <h2 class="section-title">La grille</h2>
-      <p class="section-sub">Objectif central : expert international reconnu, influence sur les politiques de développement en Afrique — horizon 15-20 ans.</p>
+      <h2 class="section-title" id="t_grid_title"></h2>
+      <p class="section-sub" id="t_grid_sub"></p>
+
       <div class="milestones">
-        <span class="milestone-chip">✓ Thèse soutenue</span>
-        <span class="milestone-chip">✓ LAFMA CAMES obtenue</span>
-        <span class="milestone-chip next">🎯 LAFMC visée 2030</span>
+        <span class="milestone-chip" id="t_milestone1"></span>
+        <span class="milestone-chip" id="t_milestone2"></span>
+        <span class="milestone-chip next" id="t_milestone3"></span>
       </div>
 
       <div class="ritual-card" id="ritualCard">
         <div class="ritual-head" onclick="toggleRitual()">
-          <span class="ritual-title">🧭 Ton rituel</span>
+          <span class="ritual-title" id="t_ritual_title"></span>
           <span class="ritual-chevron" id="ritualChevron">▾</span>
         </div>
         <div class="ritual-body" id="ritualBody">
           <div class="ritual-block">
-            <div class="ritual-block-label">Quotidien · après la prière du matin · 5 min</div>
-            <ol class="ritual-steps">
-              <li>Ouvrir l'app (10 s)</li>
-              <li>Regarder hier, marquer honnêtement (1 min)</li>
-              <li>Loguer 1 à 3 actions du jour (3 min)</li>
-              <li>Coup d'œil au badge de phase (30 s)</li>
-            </ol>
+            <div class="ritual-block-label" id="t_ritual_daily_label"></div>
+            <ol class="ritual-steps" id="t_ritual_daily_steps"></ol>
           </div>
           <div class="ritual-block">
-            <div class="ritual-block-label">Hebdomadaire · dimanche soir · 15-20 min</div>
-            <ol class="ritual-steps">
-              <li>Bilan de la semaine (3 min)</li>
-              <li>Relire le journal, chercher un pattern (5 min)</li>
-              <li>Identifier l'axe le plus négligé (2 min)</li>
-              <li>Fixer 2-3 priorités (pas 8) pour la semaine (5 min)</li>
-              <li>Une ligne de satisfaction — ce qui a marché (2 min)</li>
-            </ol>
+            <div class="ritual-block-label" id="t_ritual_weekly_label"></div>
+            <ol class="ritual-steps" id="t_ritual_weekly_steps"></ol>
           </div>
-          <div class="ritual-rule">Règle unique : si un jour tu n'as vraiment pas 5 min, fais au moins l'étape 1+2 (30 s). N'oublie jamais d'ouvrir l'app — c'est ça qui tient l'habitude, pas la complétude.</div>
+          <div class="ritual-rule" id="t_ritual_rule"></div>
         </div>
       </div>
 
@@ -285,45 +312,52 @@
       <div class="axis-list" id="axisList"></div>
     </section>
 
-    <!-- SEMAINE -->
+    <!-- SEMAINE / TODAY -->
     <section class="view" id="view-semaine">
-      <h2 class="section-title">Cette semaine</h2>
-      <p class="section-sub">Enregistre une action et relie-la à un axe de ta boussole.</p>
+      <h2 class="section-title" id="t_today_title"></h2>
+      <p class="section-sub" id="t_today_sub"></p>
+
       <div class="card">
-        <label>Date</label>
-        <input type="date" id="fDate" />
-        <label>Axe Mandala</label>
+        <label id="t_label_axis"></label>
         <select id="fAxis"></select>
-        <label>Action</label>
-        <textarea id="fText" placeholder="Ex. Rédaction de la thèse, Sport 8km, Prière..."></textarea>
-        <label>Statut</label>
-        <div class="status-row">
-          <button class="status-btn" data-v="ok" onclick="selectStatus('ok')">✅</button>
-          <button class="status-btn" data-v="mid" onclick="selectStatus('mid')">🟡</button>
-          <button class="status-btn" data-v="ko" onclick="selectStatus('ko')">❌</button>
+        <label id="t_label_task"></label>
+        <textarea id="fText"></textarea>
+
+        <div class="chip-group">
+          <div class="chip-group-label" id="t_verbs_generic_label"></div>
+          <div class="chip-scroll" id="verbsGeneric"></div>
         </div>
-        <button class="btn-primary" onclick="addEntry()">Enregistrer l'action</button>
+        <div class="chip-group">
+          <div class="chip-group-label" id="t_verbs_axis_label"></div>
+          <div class="chip-scroll" id="verbsAxis"></div>
+        </div>
+
+        <button class="btn-primary" id="t_btn_add" onclick="addEntry()"></button>
       </div>
-      <h2 class="section-title" style="font-size:16px;">7 derniers jours</h2>
-      <div class="entry-list" id="weekList"></div>
+
+      <div class="today-progress" id="todayProgress"></div>
+      <div class="entry-list" id="todayList"></div>
+
+      <h2 class="section-title" style="font-size:15px; margin-top:26px;" id="t_prev_days_title"></h2>
+      <div class="entry-list" id="recentList"></div>
     </section>
 
     <!-- JOURNAL -->
     <section class="view" id="view-journal">
-      <h2 class="section-title">Journal des actions</h2>
+      <h2 class="section-title" id="t_journal_title"></h2>
       <div class="filter-row" id="filterRow"></div>
       <div class="entry-list" id="journalList"></div>
     </section>
 
     <!-- BILAN -->
     <section class="view" id="view-bilan">
-      <h2 class="section-title">Tableau de bord</h2>
+      <h2 class="section-title" id="t_bilan_title"></h2>
       <div class="kpi-row">
-        <div class="kpi"><div class="kpi-num" id="kpiTotal">0</div><div class="kpi-label">ACTIONS LOGUÉES</div></div>
-        <div class="kpi"><div class="kpi-num" id="kpiRate">0%</div><div class="kpi-label">TAUX DE RÉUSSITE</div></div>
-        <div class="kpi"><div class="kpi-num" id="kpiStreak">0</div><div class="kpi-label">JOURS ACTIFS</div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiTotal">0</div><div class="kpi-label" id="t_kpi_total"></div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiRate">0%</div><div class="kpi-label" id="t_kpi_rate"></div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiStreak">0</div><div class="kpi-label" id="t_kpi_streak"></div></div>
       </div>
-      <h2 class="section-title" style="font-size:15px;">Répartition par axe</h2>
+      <h2 class="section-title" style="font-size:15px;" id="t_axis_breakdown"></h2>
       <div id="axisBars"></div>
     </section>
   </main>
@@ -333,19 +367,19 @@
   <nav class="bottomnav">
     <button class="navbtn active" data-view="boussole" onclick="showView('boussole')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg>
-      Boussole
+      <span id="t_nav_boussole"></span>
     </button>
     <button class="navbtn" data-view="semaine" onclick="showView('semaine')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-      Semaine
+      <span id="t_nav_semaine"></span>
     </button>
     <button class="navbtn" data-view="journal" onclick="showView('journal')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h7M9 13h7M9 17h4"/></svg>
-      Journal
+      <span id="t_nav_journal"></span>
     </button>
     <button class="navbtn" data-view="bilan" onclick="showView('bilan')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
-      Bilan
+      <span id="t_nav_bilan"></span>
     </button>
   </nav>
 </div>
@@ -360,84 +394,175 @@
 </div>
 
 <script>
-/* ============ DATA MODEL ============ */
-const CENTRAL_GOAL = "Expert international reconnu, influence réelle sur les politiques de développement en Afrique — horizon 15-20 ans";
+/* ============ i18n STRINGS ============ */
+const STR = {
+  fr: {
+    nav_boussole:"Boussole", nav_semaine:"Aujourd'hui", nav_journal:"Journal", nav_bilan:"Bilan",
+    grid_title:"La grille",
+    grid_sub:"Objectif central : expert international reconnu, influence sur les politiques de développement en Afrique — horizon 15-20 ans.",
+    milestone1:"✓ Thèse soutenue", milestone2:"✓ LAFMA CAMES obtenue", milestone3:"🎯 LAFMC visée 2030",
+    ritual_title:"🧭 Ton rituel",
+    ritual_daily_label:"Quotidien · après la prière du matin · 5 min",
+    ritual_daily_steps:["Ouvrir l'app (10 s)","Regarder hier, marquer honnêtement (1 min)","Loguer 1 à 3 tâches du jour (3 min)","Coup d'œil au badge de phase (30 s)"],
+    ritual_weekly_label:"Hebdomadaire · dimanche soir · 15-20 min",
+    ritual_weekly_steps:["Bilan de la semaine (3 min)","Relire le journal, chercher un pattern (5 min)","Identifier l'axe le plus négligé (2 min)","Fixer 2-3 priorités (pas 8) pour la semaine (5 min)","Une ligne de satisfaction — ce qui a marché (2 min)"],
+    ritual_rule:"Règle unique : si un jour tu n'as vraiment pas 5 min, fais au moins l'étape 1+2 (30 s). N'oublie jamais d'ouvrir l'app — c'est ça qui tient l'habitude, pas la complétude.",
+    today_title:"Aujourd'hui",
+    today_sub:"Le matin : ajoute tes tâches. Dans la journée : tape sur le cercle pour cocher. Le soir : regarde le Bilan.",
+    label_axis:"Axe Mandala", label_task:"Tâche à faire",
+    placeholder_task:"Ex. Rédaction de la thèse, Sport 8km, Prière...",
+    verbs_generic_label:"Verbes généraux", verbs_axis_label:"Verbes pour cet axe",
+    btn_add:"＋ Ajouter à la journée",
+    prev_days_title:"Jours précédents",
+    journal_title:"Journal des actions",
+    filter_all:"Tous",
+    bilan_title:"Tableau de bord",
+    kpi_total:"TÂCHES LOGUÉES", kpi_rate:"TAUX DE RÉUSSITE", kpi_streak:"JOURS ACTIFS",
+    axis_breakdown:"Répartition par axe",
+    empty_today:"Aucune tâche pour aujourd'hui.<br>Ajoute ta première tâche ci-dessus ☝️",
+    empty_prev:"Rien avant aujourd'hui pour l'instant.",
+    empty_journal:"Aucune tâche pour ce filtre.",
+    sheet_sub:"Sous-objectifs et phase associée",
+    treated_label:"traitées aujourd'hui",
+    axis_label_short:"Axe",
+    lang_name:"Français"
+  },
+  en: {
+    nav_boussole:"Compass", nav_semaine:"Today", nav_journal:"Journal", nav_bilan:"Dashboard",
+    grid_title:"The grid",
+    grid_sub:"Central goal: recognized international expert, real influence on development policy in Africa — 15-20 year horizon.",
+    milestone1:"✓ Thesis defended", milestone2:"✓ CAMES Assistant Professor rank obtained", milestone3:"🎯 Associate Professor rank targeted 2030",
+    ritual_title:"🧭 Your ritual",
+    ritual_daily_label:"Daily · after morning prayer · 5 min",
+    ritual_daily_steps:["Open the app (10 s)","Look at yesterday, mark it honestly (1 min)","Log 1 to 3 tasks for today (3 min)","Glance at the phase badge (30 s)"],
+    ritual_weekly_label:"Weekly · Sunday evening · 15-20 min",
+    ritual_weekly_steps:["Review the week's dashboard (3 min)","Reread the journal, look for a pattern (5 min)","Identify the most neglected axis (2 min)","Set 2-3 priorities (not 8) for next week (5 min)","One line of satisfaction — what worked (2 min)"],
+    ritual_rule:"One rule: if you truly don't have 5 min on a given day, at least do step 1+2 (30 s). Never skip opening the app — that's what keeps the habit alive, not completeness.",
+    today_title:"Today",
+    today_sub:"In the morning: add your tasks. During the day: tap the circle to tick. In the evening: check the Dashboard.",
+    label_axis:"Mandala axis", label_task:"Task to do",
+    placeholder_task:"E.g. Write the thesis, 8km run, Prayer...",
+    verbs_generic_label:"General verbs", verbs_axis_label:"Verbs for this axis",
+    btn_add:"＋ Add to today",
+    prev_days_title:"Previous days",
+    journal_title:"Action journal",
+    filter_all:"All",
+    bilan_title:"Dashboard",
+    kpi_total:"TASKS LOGGED", kpi_rate:"SUCCESS RATE", kpi_streak:"ACTIVE DAYS",
+    axis_breakdown:"Breakdown by axis",
+    empty_today:"No task for today yet.<br>Add your first task above ☝️",
+    empty_prev:"Nothing before today yet.",
+    empty_journal:"No task for this filter.",
+    sheet_sub:"Sub-goals and associated phase",
+    treated_label:"handled today",
+    axis_label_short:"Axis",
+    lang_name:"English"
+  }
+};
+let lang = localStorage.getItem('app_lang') || 'fr';
 
-const PHASES = {P1:{label:"Fondations",range:"2026-2029",color:"#3E8A67"}, P2:{label:"Consolidation",range:"2029-2034",color:"#C8962C"}, P3:{label:"Rayonnement",range:"2034-2046",color:"#8B96AC"}};
+/* ============ DATA MODEL (bilingual) ============ */
+const CENTRAL_GOAL = {
+  fr:"Expert international reconnu, influence réelle sur les politiques de développement en Afrique — horizon 15-20 ans",
+  en:"Recognized international expert, real influence on development policy in Africa — 15-20 year horizon"
+};
+
+const PHASE_INFO = {
+  P1:{fr:"Fondations", en:"Foundations", range:"2026-2029", color:"#3E8A67"},
+  P2:{fr:"Consolidation", en:"Consolidation", range:"2029-2034", color:"#C8962C"},
+  P3:{fr:"Rayonnement", en:"Expansion", range:"2034-2046", color:"#8B96AC"}
+};
 
 const AXES = [
- {title:"Excellence académique & recherche", color:"#C8962C", items:[
-   ["Décrocher le Michigan Postdoctoral African-Faculty AI Fellowship","P1"],
-   ["Publier régulièrement en revues indexées (2-3 articles/an)","P1"],
-   ["Obtenir l'HDR","P2"],
-   ["Ligne de recherche signature (ontologies + neuro-symbolique + Afrique)","P1"],
-   ["Encadrer des doctorants (superviseur → directeur de thèse)","P2"],
-   ["Renforcer collaborations internationales & financements de recherche","P1"],
-   ["Viser des conférences internationales de premier plan","P2"],
-   ["Anglais académique solide (TOEFL/IELTS/Duolingo)","P1"]]},
- {title:"Akilia Consulting — vitrine d'impact", color:"#3E8A67", items:[
-   ["Asseoir Akilia comme cabinet de référence national (institutions & structures publiques/privées)","P1"],
-   ["Sécuriser et livrer la mission DCGM","P1"],
-   ["Faire aboutir PRESAGE auprès du MAERAH","P1"],
-   ["Construire un track record documenté (études de cas, résultats chiffrés)","P1"],
-   ["Structurer la gouvernance et l'équipe d'Akilia (prérequis appels d'offres internationaux)","P2"],
-   ["Structurer une offre GovTech réplicable (Digital & AI comme moteur de croissance)","P2"],
-   ["Diversifier les bailleurs et partenaires (national → régional)","P2"],
-   ["Basculer vers la consultance senior internationale (Banque mondiale, institutions internationales)","P3"]]},
- {title:"Crédentialisation & expertise reconnue", color:"#1B2A4A", items:[
-   ["Capitaliser sur l'agrément APEN Catégorie C expert sénior","P1"],
-   ["Finaliser la certification PMP®","P1"],
-   ["Certification internationale reconnue en IA/data science","P1"],
-   ["Réseaux de conseil scientifique international (INGSA, councils)","P1"],
-   ["Décrocher la LAFMC CAMES — cible 2030 (LAFMA obtenue ✓ 2026)","P2"],
-   ["Documenter et formaliser l'expertise CTS-Onto/sécurité","P1"],
-   ["Accréditation/reconnaissance liée à la Banque mondiale/ONU","P2"],
-   ["Profil d'expert visible en ligne","P1"]]},
- {title:"Réseau & mobilité internationale", color:"#C8962C", items:[
-   ["Obtenir la bourse Fulbright","P1"],
-   ["Réussir le SASDP-5 (INGSA-Afrique)","P1"],
-   ["Participer activement aux événements INGSA","P1"],
-   ["Réseau de mentors internationaux","P1"],
-   ["Présence dans les cercles francophones + anglophones","P2"],
-   ["Séjours de recherche à l'étranger","P2"],
-   ["Programmes de leadership/networking ciblés","P2"],
-   ["Réseau actif d'anciens collègues et partenaires","P1"]]},
- {title:"Expérience institutionnelle directe", color:"#3E8A67", items:[
-   ["Postes STC à la Banque mondiale","P2"],
-   ["Rosters d'experts seniors (UNESCO soumis ✓, BM/UA/AfDB à venir)","P1"],
-   ["Missions d'expertise ponctuelle UA/CEDEAO","P2"],
-   ["Appels d'offres internationaux via Akilia","P1"],
-   ["Groupes de travail/consultations UNESCO/PNUD","P2"],
-   ["Première mission de référence « signature »","P2"],
-   ["Comprendre les circuits de recrutement institutionnels","P1"],
-   ["Transformer une expérience en relation durable","P3"]]},
- {title:"Compétences transversales clés", color:"#1B2A4A", items:[
-   ["Écriture de notes de politique publique (policy briefs)","P1"],
-   ["Évaluation et suivi de politiques publiques (M&E)","P1"],
-   ["Prise de parole publique et communication haut niveau","P1"],
-   ["Compréhension fine de la gouvernance multilatérale","P1"],
-   ["Gestion de projet en contexte international","P2"],
-   ["Rédaction rapide de propositions/notes techniques","P1"],
-   ["Négociation et diplomatie institutionnelle","P2"],
-   ["Littératie financière et budgétaire (grands projets)","P2"]]},
- {title:"Positionnement thématique unique", color:"#C8962C", items:[
-   ["Signature thématique claire","P1"],
-   ["Référence sur les ontologies appliquées au contexte africain","P2"],
-   ["Article de synthèse / position paper","P1"],
-   ["Communauté/label autour de ce positionnement","P2"],
-   ["Cas d'usage concrets (PRESAGE, OntoRenal-BF, CTS-Onto)","P1"],
-   ["Expertise reconnue sur l'IA frugale/embarquée","P2"],
-   ["Se positionner sur la souveraineté numérique africaine","P2"],
-   ["Voix sollicitée par les médias/plateformes spécialisées","P3"]]},
- {title:"Fondations personnelles & durabilité", color:"#3E8A67", items:[
-   ["Préserver l'équilibre familial et le couple","P1"],
-   ["Indépendance financière personnelle solide","P1"],
-   ["Anticiper la mobilité géographique","P1"],
-   ["Préserver la santé physique et mentale sur la durée","P1"],
-   ["Transition de gouvernance à Akilia","P2"],
-   ["Ancrage local fort malgré l'ouverture internationale","P1"],
-   ["Cercle de soutien/conseil personnel","P1"],
-   ["Célébrer et documenter les étapes franchies","P1"]]}
+ {title:{fr:"Excellence académique & recherche", en:"Academic excellence & research"}, color:"#C8962C", items:[
+   [{fr:"Décrocher le Michigan Postdoctoral African-Faculty AI Fellowship", en:"Secure the Michigan Postdoctoral African-Faculty AI Fellowship"},"P1"],
+   [{fr:"Publier régulièrement en revues indexées (2-3 articles/an)", en:"Publish regularly in indexed journals (2-3 papers/year)"},"P1"],
+   [{fr:"Obtenir l'HDR", en:"Obtain the HDR (habilitation to supervise research)"},"P2"],
+   [{fr:"Ligne de recherche signature (ontologies + neuro-symbolique + Afrique)", en:"Signature research line (ontologies + neuro-symbolic AI + Africa)"},"P1"],
+   [{fr:"Encadrer des doctorants (superviseur → directeur de thèse)", en:"Supervise PhD students (supervisor → thesis director)"},"P2"],
+   [{fr:"Renforcer collaborations internationales & financements de recherche", en:"Strengthen international collaborations & research funding"},"P1"],
+   [{fr:"Viser des conférences internationales de premier plan", en:"Target top-tier international conferences"},"P2"],
+   [{fr:"Anglais académique solide (TOEFL/IELTS/Duolingo)", en:"Solid academic English (TOEFL/IELTS/Duolingo)"},"P1"]]},
+ {title:{fr:"Akilia Consulting — vitrine d'impact", en:"Akilia Consulting — impact showcase"}, color:"#3E8A67", items:[
+   [{fr:"Asseoir Akilia comme cabinet de référence national (institutions & structures publiques/privées)", en:"Establish Akilia as a national reference firm (public/private institutions)"},"P1"],
+   [{fr:"Sécuriser et livrer la mission DCGM", en:"Secure and deliver the DCGM mission"},"P1"],
+   [{fr:"Faire aboutir PRESAGE auprès du MAERAH", en:"Bring PRESAGE to completion with MAERAH"},"P1"],
+   [{fr:"Construire un track record documenté (études de cas, résultats chiffrés)", en:"Build a documented track record (case studies, measurable results)"},"P1"],
+   [{fr:"Structurer la gouvernance et l'équipe d'Akilia (prérequis appels d'offres internationaux)", en:"Structure Akilia's governance and team (prerequisite for international tenders)"},"P2"],
+   [{fr:"Structurer une offre GovTech réplicable (Digital & AI comme moteur de croissance)", en:"Structure a replicable GovTech offer (Digital & AI as growth engine)"},"P2"],
+   [{fr:"Diversifier les bailleurs et partenaires (national → régional)", en:"Diversify funders and partners (national → regional)"},"P2"],
+   [{fr:"Basculer vers la consultance senior internationale (Banque mondiale, institutions internationales)", en:"Transition to senior international consulting (World Bank, international institutions)"},"P3"]]},
+ {title:{fr:"Crédentialisation & expertise reconnue", en:"Credentialing & recognized expertise"}, color:"#1B2A4A", items:[
+   [{fr:"Capitaliser pleinement sur l'agrément APEN Catégorie C expert sénior", en:"Fully leverage the APEN Category C senior expert accreditation"},"P1"],
+   [{fr:"Finaliser la certification PMP®", en:"Finalize the PMP® certification"},"P1"],
+   [{fr:"Obtenir une certification internationale reconnue en IA/data science", en:"Obtain a recognized international AI/data science certification"},"P1"],
+   [{fr:"Intégrer des réseaux et organismes de conseil scientifique international (INGSA, councils)", en:"Join international science-advice networks and bodies (INGSA, councils)"},"P1"],
+   [{fr:"Décrocher la LAFMC CAMES — cible 2030 (LAFMA obtenue ✓ 2026)", en:"Obtain LAFMC CAMES (Associate Professor rank) — targeted 2030 (LAFMA obtained ✓ 2026)"},"P2"],
+   [{fr:"Documenter et formaliser l'expertise CTS-Onto/sécurité", en:"Document and formalize the CTS-Onto/security expertise"},"P1"],
+   [{fr:"Obtenir une accréditation/reconnaissance liée à la Banque mondiale/ONU", en:"Obtain accreditation/recognition linked to the World Bank/UN"},"P2"],
+   [{fr:"Construire un profil d'expert visible en ligne", en:"Build a visible online expert profile"},"P1"]]},
+ {title:{fr:"Réseau & mobilité internationale", en:"Network & international mobility"}, color:"#C8962C", items:[
+   [{fr:"Obtenir la bourse Fulbright", en:"Obtain the Fulbright scholarship"},"P1"],
+   [{fr:"Réussir le SASDP-5 (INGSA-Afrique)", en:"Successfully complete SASDP-5 (INGSA-Africa)"},"P1"],
+   [{fr:"Participer activement aux événements INGSA", en:"Actively participate in INGSA events"},"P1"],
+   [{fr:"Réseau de mentors internationaux", en:"Build a network of international mentors"},"P1"],
+   [{fr:"Présence dans les cercles francophones + anglophones", en:"Presence in both francophone and anglophone circles"},"P2"],
+   [{fr:"Séjours de recherche à l'étranger", en:"Research stays abroad"},"P2"],
+   [{fr:"Programmes de leadership/networking ciblés", en:"Targeted leadership/networking programs"},"P2"],
+   [{fr:"Réseau actif d'anciens collègues et partenaires", en:"Active network of former colleagues and partners"},"P1"]]},
+ {title:{fr:"Expérience institutionnelle directe", en:"Direct institutional experience"}, color:"#3E8A67", items:[
+   [{fr:"Postes STC à la Banque mondiale", en:"Short-Term Consultant roles at the World Bank"},"P2"],
+   [{fr:"Rosters d'experts seniors (UNESCO soumis ✓, BM/UA/AfDB à venir)", en:"Senior expert rosters (UNESCO submitted ✓, World Bank/AU/AfDB next)"},"P1"],
+   [{fr:"Missions d'expertise ponctuelle UA/CEDEAO", en:"One-off expert missions with AU/ECOWAS"},"P2"],
+   [{fr:"Appels d'offres internationaux via Akilia", en:"International tenders via Akilia"},"P1"],
+   [{fr:"Groupes de travail/consultations UNESCO/PNUD", en:"UNESCO/UNDP working groups & consultations"},"P2"],
+   [{fr:"Première mission de référence « signature »", en:"First flagship reference mission"},"P2"],
+   [{fr:"Comprendre les circuits de recrutement institutionnels", en:"Understand institutional recruitment pathways"},"P1"],
+   [{fr:"Transformer une expérience en relation durable", en:"Turn an experience into a lasting relationship"},"P3"]]},
+ {title:{fr:"Compétences transversales clés", en:"Key transversal skills"}, color:"#1B2A4A", items:[
+   [{fr:"Écriture de notes de politique publique (policy briefs)", en:"Writing policy briefs"},"P1"],
+   [{fr:"Évaluation et suivi de politiques publiques (M&E)", en:"Policy monitoring & evaluation (M&E)"},"P1"],
+   [{fr:"Prise de parole publique et communication haut niveau", en:"Public speaking and high-level communication"},"P1"],
+   [{fr:"Compréhension fine de la gouvernance multilatérale", en:"Deep understanding of multilateral governance"},"P1"],
+   [{fr:"Gestion de projet en contexte international", en:"Project management in an international context"},"P2"],
+   [{fr:"Rédaction rapide de propositions/notes techniques", en:"Fast drafting of proposals/technical notes"},"P1"],
+   [{fr:"Négociation et diplomatie institutionnelle", en:"Negotiation and institutional diplomacy"},"P2"],
+   [{fr:"Littératie financière et budgétaire (grands projets)", en:"Financial and budget literacy (large projects)"},"P2"]]},
+ {title:{fr:"Positionnement thématique unique", en:"Unique thematic positioning"}, color:"#C8962C", items:[
+   [{fr:"Signature thématique claire", en:"Clear thematic signature"},"P1"],
+   [{fr:"Référence sur les ontologies appliquées au contexte africain", en:"Reference figure on ontologies applied to the African context"},"P2"],
+   [{fr:"Article de synthèse / position paper", en:"Synthesis article / position paper"},"P1"],
+   [{fr:"Communauté/label autour de ce positionnement", en:"Community/label around this positioning"},"P2"],
+   [{fr:"Cas d'usage concrets (PRESAGE, OntoRenal-BF, CTS-Onto)", en:"Concrete use cases (PRESAGE, OntoRenal-BF, CTS-Onto)"},"P1"],
+   [{fr:"Expertise reconnue sur l'IA frugale/embarquée", en:"Recognized expertise in frugal/embedded AI"},"P2"],
+   [{fr:"Se positionner sur la souveraineté numérique africaine", en:"Position on African digital sovereignty"},"P2"],
+   [{fr:"Voix sollicitée par les médias/plateformes spécialisées", en:"Sought-after voice for media/specialized platforms"},"P3"]]},
+ {title:{fr:"Fondations personnelles & durabilité", en:"Personal foundations & sustainability"}, color:"#3E8A67", items:[
+   [{fr:"Préserver l'équilibre familial et le couple", en:"Preserve family balance and the couple"},"P1"],
+   [{fr:"Indépendance financière personnelle solide", en:"Solid personal financial independence"},"P1"],
+   [{fr:"Anticiper la mobilité géographique", en:"Anticipate geographic mobility"},"P1"],
+   [{fr:"Préserver la santé physique et mentale sur la durée", en:"Preserve physical and mental health over time"},"P1"],
+   [{fr:"Transition de gouvernance à Akilia", en:"Governance transition at Akilia"},"P2"],
+   [{fr:"Ancrage local fort malgré l'ouverture internationale", en:"Strong local anchoring despite international outreach"},"P1"],
+   [{fr:"Cercle de soutien/conseil personnel", en:"Personal support/advisory circle"},"P1"],
+   [{fr:"Célébrer et documenter les étapes franchies", en:"Celebrate and document milestones reached"},"P1"]]}
+];
+
+/* ============ VERB SUGGESTIONS (bilingual) ============ */
+const VERBS_GENERIC = [
+  {en:"Draft",en2:"", fr:"Rédiger"}, {en:"Review", fr:"Relire, examiner"}, {en:"Finalize", fr:"Finaliser"},
+  {en:"Submit", fr:"Soumettre"}, {en:"Follow up", fr:"Relancer"}, {en:"Schedule", fr:"Planifier"},
+  {en:"Prepare", fr:"Préparer"}, {en:"Send", fr:"Envoyer"}, {en:"Update", fr:"Mettre à jour"}, {en:"Validate", fr:"Valider"}
+];
+const VERBS_BY_AXIS = [
+  [{en:"Research", fr:"Rechercher"},{en:"Draft", fr:"Rédiger"},{en:"Review", fr:"Relire"},{en:"Cite", fr:"Citer"},{en:"Submit", fr:"Soumettre"},{en:"Revise", fr:"Réviser"},{en:"Analyze", fr:"Analyser"},{en:"Publish", fr:"Publier"}],
+  [{en:"Deliver", fr:"Livrer"},{en:"Negotiate", fr:"Négocier"},{en:"Present", fr:"Présenter"},{en:"Follow up", fr:"Relancer"},{en:"Invoice", fr:"Facturer"},{en:"Coordinate", fr:"Coordonner"},{en:"Finalize", fr:"Finaliser"},{en:"Draft", fr:"Rédiger"}],
+  [{en:"Apply", fr:"Postuler"},{en:"Submit", fr:"Soumettre"},{en:"Renew", fr:"Renouveler"},{en:"Certify", fr:"Certifier"},{en:"Update", fr:"Mettre à jour"},{en:"Validate", fr:"Valider"},{en:"Compile", fr:"Compiler"},{en:"Register", fr:"S'inscrire"}],
+  [{en:"Network", fr:"Réseauter"},{en:"Contact", fr:"Contacter"},{en:"Attend", fr:"Participer"},{en:"Introduce", fr:"Présenter"},{en:"Follow up", fr:"Relancer"},{en:"Join", fr:"Rejoindre"},{en:"Email", fr:"Envoyer un e-mail"},{en:"Schedule", fr:"Planifier"}],
+  [{en:"Apply", fr:"Postuler"},{en:"Register", fr:"S'inscrire"},{en:"Submit", fr:"Soumettre"},{en:"Follow up", fr:"Relancer"},{en:"Prepare", fr:"Préparer"},{en:"Interview", fr:"Passer un entretien"},{en:"Track", fr:"Suivre"},{en:"Respond", fr:"Répondre"}],
+  [{en:"Practice", fr:"Pratiquer"},{en:"Write", fr:"Écrire"},{en:"Present", fr:"Présenter"},{en:"Train", fr:"S'entraîner"},{en:"Learn", fr:"Apprendre"},{en:"Review", fr:"Réviser"},{en:"Simulate", fr:"Simuler"},{en:"Read", fr:"Lire"}],
+  [{en:"Write", fr:"Écrire"},{en:"Publish", fr:"Publier"},{en:"Define", fr:"Définir"},{en:"Share", fr:"Partager"},{en:"Present", fr:"Présenter"},{en:"Pitch", fr:"Pitcher"},{en:"Draft", fr:"Rédiger"},{en:"Promote", fr:"Promouvoir"}],
+  [{en:"Rest", fr:"Se reposer"},{en:"Exercise", fr:"Faire du sport"},{en:"Pray", fr:"Prier"},{en:"Call", fr:"Appeler"},{en:"Save", fr:"Épargner"},{en:"Plan", fr:"Planifier"},{en:"Reflect", fr:"Réfléchir"},{en:"Celebrate", fr:"Célébrer"}]
 ];
 
 /* ============ STORAGE ============ */
@@ -446,13 +571,76 @@ function loadEntries(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY)) 
 function saveEntries(list){ localStorage.setItem(STORE_KEY, JSON.stringify(list)); }
 let entries = loadEntries();
 
+/* ============ LANGUAGE ============ */
+function t(key){ return STR[lang][key]; }
+function setLang(l){
+  lang = l;
+  localStorage.setItem('app_lang', l);
+  document.documentElement.lang = l;
+  applyLanguage();
+}
+function applyLanguage(){
+  document.getElementById('langFr').classList.toggle('active', lang==='fr');
+  document.getElementById('langEn').classList.toggle('active', lang==='en');
+
+  document.getElementById('t_nav_boussole').textContent = t('nav_boussole');
+  document.getElementById('t_nav_semaine').textContent = t('nav_semaine');
+  document.getElementById('t_nav_journal').textContent = t('nav_journal');
+  document.getElementById('t_nav_bilan').textContent = t('nav_bilan');
+
+  document.getElementById('t_grid_title').textContent = t('grid_title');
+  document.getElementById('t_grid_sub').textContent = t('grid_sub');
+  document.getElementById('t_milestone1').textContent = t('milestone1');
+  document.getElementById('t_milestone2').textContent = t('milestone2');
+  document.getElementById('t_milestone3').textContent = t('milestone3');
+
+  document.getElementById('t_ritual_title').textContent = t('ritual_title');
+  document.getElementById('t_ritual_daily_label').textContent = t('ritual_daily_label');
+  document.getElementById('t_ritual_daily_steps').innerHTML = t('ritual_daily_steps').map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('t_ritual_weekly_label').textContent = t('ritual_weekly_label');
+  document.getElementById('t_ritual_weekly_steps').innerHTML = t('ritual_weekly_steps').map(s=>`<li>${s}</li>`).join('');
+  document.getElementById('t_ritual_rule').textContent = t('ritual_rule');
+
+  document.getElementById('t_today_title').textContent = t('today_title');
+  document.getElementById('t_today_sub').textContent = t('today_sub');
+  document.getElementById('t_label_axis').textContent = t('label_axis');
+  document.getElementById('t_label_task').textContent = t('label_task');
+  document.getElementById('fText').placeholder = t('placeholder_task');
+  document.getElementById('t_verbs_generic_label').textContent = t('verbs_generic_label');
+  document.getElementById('t_verbs_axis_label').textContent = t('verbs_axis_label');
+  document.getElementById('t_btn_add').textContent = t('btn_add');
+  document.getElementById('t_prev_days_title').textContent = t('prev_days_title');
+
+  document.getElementById('t_journal_title').textContent = t('journal_title');
+  document.getElementById('t_bilan_title').textContent = t('bilan_title');
+  document.getElementById('t_kpi_total').textContent = t('kpi_total');
+  document.getElementById('t_kpi_rate').textContent = t('kpi_rate');
+  document.getElementById('t_kpi_streak').textContent = t('kpi_streak');
+  document.getElementById('t_axis_breakdown').textContent = t('axis_breakdown');
+
+  updatePhaseBadge();
+  populateAxisSelect();
+  buildCompass();
+  buildAxisList();
+  buildFilters();
+  renderVerbChips();
+  renderToday();
+  renderRecent();
+  renderJournal();
+  renderBilan();
+}
+function updatePhaseBadge(){
+  const p = PHASE_INFO.P1;
+  document.getElementById('phaseBadge').textContent = `${lang==='fr'?'Phase 1':'Phase 1'} · ${p[lang]} · ${p.range}`;
+}
+
 /* ============ NAVIGATION ============ */
 function showView(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
   document.getElementById('fabAdd').classList.toggle('show', name==='journal');
-  if(name==='semaine') renderWeekList();
+  if(name==='semaine'){ renderToday(); renderRecent(); }
   if(name==='journal') renderJournal();
   if(name==='bilan') renderBilan();
   window.scrollTo(0,0);
@@ -463,15 +651,14 @@ function buildCompass(){
   const svg = document.getElementById('compass');
   const CX=200, CY=200, R=150;
   let html = '';
-  // rings
   [175,150,120,90].forEach((r,i)=>{
     html += `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="#C8962C" stroke-width="1" opacity="${0.08+i*0.03}"/>`;
   });
-  // center
   html += `<circle cx="${CX}" cy="${CY}" r="72" fill="#0B1428" stroke="#E8C377" stroke-width="1.2" opacity="0.9"/>`;
-  html += `<text x="${CX}" y="${CY-10}" text-anchor="middle" fill="#F5F2EA" font-size="11" font-weight="700" font-family="Georgia,serif">EXPERT</text>`;
-  html += `<text x="${CX}" y="${CY+6}" text-anchor="middle" fill="#F5F2EA" font-size="11" font-weight="700" font-family="Georgia,serif">INTERNATIONAL</text>`;
-  html += `<text x="${CX}" y="${CY+22}" text-anchor="middle" fill="#C8962C" font-size="11" font-weight="700" font-family="Georgia,serif">RECONNU</text>`;
+  const goalLines = lang==='fr' ? ["EXPERT","INTERNATIONAL","RECONNU"] : ["RECOGNIZED","INTERNATIONAL","EXPERT"];
+  html += `<text x="${CX}" y="${CY-10}" text-anchor="middle" fill="#F5F2EA" font-size="10.5" font-weight="700" font-family="Georgia,serif">${goalLines[0]}</text>`;
+  html += `<text x="${CX}" y="${CY+6}" text-anchor="middle" fill="#F5F2EA" font-size="10.5" font-weight="700" font-family="Georgia,serif">${goalLines[1]}</text>`;
+  html += `<text x="${CX}" y="${CY+22}" text-anchor="middle" fill="#C8962C" font-size="10.5" font-weight="700" font-family="Georgia,serif">${goalLines[2]}</text>`;
 
   AXES.forEach((axis,i)=>{
     const ang = (i * 360/8) * Math.PI/180;
@@ -491,71 +678,121 @@ function buildAxisList(){
   wrap.innerHTML = AXES.map((a,i)=>`
     <div class="axis-card" onclick="openAxis(${i})">
       <div class="axis-dot" style="background:${a.color}"></div>
-      <div class="axis-name">${i+1}. ${a.title}</div>
+      <div class="axis-name">${i+1}. ${a.title[lang]}</div>
       <div class="axis-chevron">›</div>
     </div>`).join('');
 }
 
 function openAxis(i){
   const a = AXES[i];
-  document.getElementById('sheetTitle').textContent = `Axe ${i+1} — ${a.title}`;
-  document.getElementById('sheetSub').textContent = 'Sous-objectifs et phase associée';
+  document.getElementById('sheetTitle').textContent = `${t('axis_label_short')} ${i+1} — ${a.title[lang]}`;
+  document.getElementById('sheetSub').textContent = t('sheet_sub');
   document.getElementById('sheetItems').innerHTML = a.items.map(([txt,ph])=>`
-    <div class="sub-item"><span class="phase-tag ${ph}">${ph}</span><span>${txt}</span></div>`).join('');
+    <div class="sub-item"><span class="phase-tag ${ph}">${ph}</span><span>${txt[lang]}</span></div>`).join('');
   document.getElementById('sheetOverlay').classList.add('active');
 }
 function closeSheet(){ document.getElementById('sheetOverlay').classList.remove('active'); }
 
-/* ============ SEMAINE (add entry) ============ */
-let currentStatus = 'ok';
-function selectStatus(v){
-  currentStatus = v;
-  document.querySelectorAll('.status-btn').forEach(b=>b.classList.toggle('selected', b.dataset.v===v));
-}
+/* ============ SEMAINE / TODAY (plan + tick) ============ */
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
 function populateAxisSelect(){
   const sel = document.getElementById('fAxis');
-  sel.innerHTML = AXES.map((a,i)=>`<option value="${i}">Axe ${i+1} — ${a.title}</option>`).join('');
+  const prev = sel.value;
+  sel.innerHTML = AXES.map((a,i)=>`<option value="${i}">${t('axis_label_short')} ${i+1} — ${a.title[lang]}</option>`).join('');
+  if(prev !== '') sel.value = prev;
+  sel.onchange = renderVerbChips;
 }
+
+function insertAtCursor(word){
+  const ta = document.getElementById('fText');
+  const start = ta.selectionStart ?? ta.value.length;
+  const end = ta.selectionEnd ?? ta.value.length;
+  const before = ta.value.slice(0, start);
+  const after = ta.value.slice(end);
+  const needsSpace = before.length && !before.endsWith(' ') && !before.endsWith('\n');
+  const insertion = (needsSpace ? ' ' : '') + word + ' ';
+  ta.value = before + insertion + after;
+  const pos = (before + insertion).length;
+  ta.focus();
+  ta.setSelectionRange(pos, pos);
+}
+
+function verbChip(v){
+  const primary = v[lang] || v.en;
+  const secondary = lang==='fr' ? v.en : v.fr;
+  return `<div class="verb-chip" onclick="insertAtCursor('${primary.replace(/'/g,"\\'")}')">
+    <span class="${lang==='fr'?'fr':'en'}">${primary}</span><span class="sep">/</span><span class="${lang==='fr'?'en':'fr'}">${secondary}</span>
+  </div>`;
+}
+function renderVerbChips(){
+  document.getElementById('verbsGeneric').innerHTML = VERBS_GENERIC.map(verbChip).join('');
+  const axisIdx = parseInt(document.getElementById('fAxis').value || 0);
+  document.getElementById('verbsAxis').innerHTML = (VERBS_BY_AXIS[axisIdx]||[]).map(verbChip).join('');
+}
+
 function addEntry(){
-  const date = document.getElementById('fDate').value || new Date().toISOString().slice(0,10);
   const axisIdx = parseInt(document.getElementById('fAxis').value);
   const text = document.getElementById('fText').value.trim();
   if(!text){ document.getElementById('fText').focus(); return; }
-  entries.unshift({id:Date.now(), date, axisIdx, text, status:currentStatus});
+  entries.unshift({id:Date.now(), date:todayStr(), axisIdx, text, status:'pending'});
   saveEntries(entries);
   document.getElementById('fText').value='';
-  renderWeekList();
+  renderToday(); renderRecent();
 }
 function deleteEntry(id){
   entries = entries.filter(e=>e.id!==id);
   saveEntries(entries);
-  renderWeekList(); renderJournal(); renderBilan();
+  renderToday(); renderRecent(); renderJournal(); renderBilan();
 }
-function emojiFor(s){ return s==='ok'?'✅':s==='ko'?'❌':'🟡'; }
+const STATUS_CYCLE = ['pending','ok','mid','ko'];
+function cycleStatus(id){
+  const e = entries.find(x=>x.id===id);
+  if(!e) return;
+  const idx = STATUS_CYCLE.indexOf(e.status);
+  e.status = STATUS_CYCLE[(idx+1) % STATUS_CYCLE.length];
+  saveEntries(entries);
+  renderToday(); renderRecent(); renderJournal(); renderBilan();
+}
+function emojiFor(s){ return s==='ok'?'✅':s==='ko'?'❌':s==='mid'?'🟡':'⬜'; }
 function entryRow(e){
   const axis = AXES[e.axisIdx];
   return `<div class="entry ${e.status}">
-    <div class="entry-emoji">${emojiFor(e.status)}</div>
+    <div class="entry-emoji" onclick="cycleStatus(${e.id})">${emojiFor(e.status)}</div>
     <div class="entry-body">
       <div class="entry-text">${e.text}</div>
-      <div class="entry-meta">${e.date} · Axe ${e.axisIdx+1} — ${axis?axis.title:''}</div>
+      <div class="entry-meta">${e.date} · ${t('axis_label_short')} ${e.axisIdx+1} — ${axis?axis.title[lang]:''}</div>
     </div>
     <button class="entry-del" onclick="deleteEntry(${e.id})">×</button>
   </div>`;
 }
-function renderWeekList(){
+function renderToday(){
+  const today = todayStr();
+  const todays = entries.filter(e => e.date === today);
+  const list = document.getElementById('todayList');
+  list.innerHTML = todays.length ? todays.map(entryRow).join('') : `<div class="empty-state">${t('empty_today')}</div>`;
+
+  const treated = todays.filter(e => e.status !== 'pending').length;
+  const ok = todays.filter(e => e.status === 'ok').length;
+  const pct = todays.length ? Math.round(treated/todays.length*100) : 0;
+  document.getElementById('todayProgress').innerHTML = todays.length ? `
+    <div class="bar-label"><span>${treated}/${todays.length} ${t('treated_label')}</span><span>${ok} ✅</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>` : '';
+}
+function renderRecent(){
+  const today = todayStr();
   const cutoff = Date.now() - 7*24*3600*1000;
-  const recent = entries.filter(e => new Date(e.date).getTime() >= cutoff - 86400000);
-  const list = document.getElementById('weekList');
-  list.innerHTML = recent.length ? recent.map(entryRow).join('') : `<div class="empty-state">Aucune action loguée cette semaine.<br>Ajoute la première ci-dessus ☝️</div>`;
+  const recent = entries.filter(e => e.date !== today && new Date(e.date).getTime() >= cutoff - 86400000);
+  const list = document.getElementById('recentList');
+  list.innerHTML = recent.length ? recent.map(entryRow).join('') : `<div class="empty-state">${t('empty_prev')}</div>`;
 }
 
 /* ============ JOURNAL ============ */
 let journalFilter = 'all';
 function buildFilters(){
   const row = document.getElementById('filterRow');
-  let html = `<div class="filter-chip active" data-f="all" onclick="setFilter('all')">Tous</div>`;
-  AXES.forEach((a,i)=> html += `<div class="filter-chip" data-f="${i}" onclick="setFilter(${i})">Axe ${i+1}</div>`);
+  let html = `<div class="filter-chip ${journalFilter==='all'?'active':''}" data-f="all" onclick="setFilter('all')">${t('filter_all')}</div>`;
+  AXES.forEach((a,i)=> html += `<div class="filter-chip ${journalFilter===i?'active':''}" data-f="${i}" onclick="setFilter(${i})">${t('axis_label_short')} ${i+1}</div>`);
   row.innerHTML = html;
 }
 function setFilter(f){
@@ -567,16 +804,16 @@ function renderJournal(){
   let list = entries.slice();
   if(journalFilter !== 'all') list = list.filter(e=>e.axisIdx===journalFilter);
   const el = document.getElementById('journalList');
-  el.innerHTML = list.length ? list.map(entryRow).join('') : `<div class="empty-state">Aucune action pour ce filtre.</div>`;
+  el.innerHTML = list.length ? list.map(entryRow).join('') : `<div class="empty-state">${t('empty_journal')}</div>`;
 }
 
-/* ============ BILAN ============ */
+/* ============ BILAN / DASHBOARD ============ */
 function renderBilan(){
-  const total = entries.length;
+  const treated = entries.filter(e=>e.status!=='pending').length;
   const ok = entries.filter(e=>e.status==='ok').length;
-  const rate = total ? Math.round(ok/total*100) : 0;
+  const rate = treated ? Math.round(ok/treated*100) : 0;
   const days = new Set(entries.map(e=>e.date)).size;
-  document.getElementById('kpiTotal').textContent = total;
+  document.getElementById('kpiTotal').textContent = entries.length;
   document.getElementById('kpiRate').textContent = rate+'%';
   document.getElementById('kpiStreak').textContent = days;
 
@@ -584,7 +821,7 @@ function renderBilan(){
   const max = Math.max(1, ...counts);
   document.getElementById('axisBars').innerHTML = AXES.map((a,i)=>`
     <div class="bar-row">
-      <div class="bar-label"><span>${i+1}. ${a.title}</span><span>${counts[i]}</span></div>
+      <div class="bar-label"><span>${i+1}. ${a.title[lang]}</span><span>${counts[i]}</span></div>
       <div class="bar-track"><div class="bar-fill" style="width:${counts[i]/max*100}%; background:${a.color}"></div></div>
     </div>`).join('');
 }
@@ -600,13 +837,7 @@ if(localStorage.getItem('ritual_open') === '1'){
 }
 
 /* ============ INIT ============ */
-document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
-selectStatus('ok');
-populateAxisSelect();
-buildCompass();
-buildAxisList();
-buildFilters();
-renderWeekList();
+applyLanguage();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
