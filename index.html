@@ -228,8 +228,23 @@
   /* ---------- Bilan ---------- */
   .kpi-row{display:flex; gap:10px; margin-bottom:18px;}
   .kpi{flex:1; background:var(--navy); border-radius:14px; padding:16px 10px; text-align:center; border:1px solid rgba(200,150,44,0.15);}
+  .kpi.small{padding:12px 6px;}
+  .kpi.small .kpi-num{font-size:18px;}
   .kpi-num{font-family:var(--font-mono); font-size:24px; font-weight:700; color:var(--gold-soft);}
   .kpi-label{font-size:10px; color:var(--muted); margin-top:4px; letter-spacing:0.4px;}
+  .bilan-section-label{
+    font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--gold-soft);
+    letter-spacing:0.4px; margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid rgba(200,150,44,0.2);
+  }
+  .type-split-row{display:flex; gap:10px; margin-bottom:6px;}
+  .type-split{
+    flex:1; background:var(--navy); border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:space-between;
+    border-left:3px solid var(--muted);
+  }
+  .type-split.roster{border-left-color:var(--green);}
+  .type-split.tender{border-left-color:var(--gold);}
+  .type-split-label{font-size:11.5px; color:var(--cream);}
+  .type-split-num{font-family:var(--font-mono); font-size:17px; font-weight:700; color:var(--cream);}
   .bar-row{margin-bottom:14px;}
   .bar-label{display:flex; justify-content:space-between; font-size:12px; color:var(--cream); margin-bottom:5px;}
   .bar-track{height:9px; background:rgba(255,255,255,0.07); border-radius:6px; overflow:hidden;}
@@ -258,6 +273,61 @@
     display:none; align-items:center; justify-content:center;
   }
   .fab-add.show{display:flex;}
+
+  /* ---------- Opportunités ---------- */
+  .btn-search{
+    width:100%; padding:13px 0; border:1.5px dashed rgba(200,150,44,0.5); border-radius:12px;
+    background:rgba(200,150,44,0.08); color:var(--gold-soft); font-weight:700; font-size:13.5px; cursor:pointer;
+  }
+  .btn-search:active{background:rgba(200,150,44,0.16);}
+  .opp-card{
+    background:var(--navy); border-radius:14px; padding:14px 15px; border-left:3px solid var(--muted);
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .opp-card.urgent{border-left-color:var(--red);}
+  .opp-card.soon{border-left-color:var(--gold);}
+  .opp-card.far{border-left-color:var(--green);}
+  .opp-card.done{border-left-color:var(--green); opacity:0.6;}
+  .opp-top{display:flex; align-items:flex-start; gap:10px;}
+  .opp-star{
+    width:30px; height:30px; border-radius:50%; flex-shrink:0; cursor:pointer; font-size:15px;
+    display:flex; align-items:center; justify-content:center; border:1.5px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.04);
+  }
+  .opp-star.on{background:rgba(200,150,44,0.2); border-color:var(--gold);}
+  .opp-body{flex:1; min-width:0;}
+  .opp-title{font-size:13.5px; font-weight:700; color:var(--cream);}
+  .opp-org{font-size:11.5px; color:var(--muted); margin-top:1px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .type-badge{font-size:9px; font-weight:700; padding:2px 7px; border-radius:8px; letter-spacing:0.3px;}
+  .type-badge.roster{background:rgba(62,138,103,0.18); color:var(--green-soft);}
+  .type-badge.tender{background:rgba(200,150,44,0.18); color:var(--gold-soft);}
+  .opp-del{background:none; border:none; color:var(--muted); font-size:17px; cursor:pointer; padding:2px 4px;}
+  .opp-bottom{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;}
+  .opp-deadline-input{
+    background:var(--navy-deep); border:1px solid rgba(200,150,44,0.25); color:var(--cream);
+    border-radius:8px; padding:6px 8px; font-size:11.5px; font-family:var(--font-body);
+  }
+  .urgency-badge{font-size:10.5px; font-weight:700; padding:4px 9px; border-radius:14px; white-space:nowrap;}
+  .urgency-badge.urgent{background:rgba(192,96,90,0.2); color:#E39A95;}
+  .urgency-badge.soon{background:rgba(200,150,44,0.2); color:var(--gold-soft);}
+  .urgency-badge.far{background:rgba(62,138,103,0.2); color:var(--green-soft);}
+  .urgency-badge.none{background:rgba(150,160,190,0.15); color:var(--muted);}
+  .urgency-badge.done{background:rgba(62,138,103,0.2); color:var(--green-soft);}
+  .opp-done-btn{
+    background:none; border:1px solid rgba(255,255,255,0.15); color:var(--muted); border-radius:8px;
+    font-size:11px; padding:5px 9px; cursor:pointer;
+  }
+  .opp-done-btn.active{background:rgba(62,138,103,0.2); border-color:var(--green); color:var(--green-soft);}
+
+  .search-link{
+    display:flex; align-items:center; justify-content:space-between; padding:13px 14px; margin-bottom:8px;
+    background:var(--navy-deep); border:1px solid rgba(200,150,44,0.25); border-radius:12px; cursor:pointer;
+    font-size:13px; color:var(--cream);
+  }
+  .search-link:active{border-color:var(--gold);}
+  .search-link .arrow{color:var(--gold-soft);}
+  .search-hint{font-size:11.5px; color:var(--muted); font-style:italic; margin-top:12px; line-height:1.5; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08);}
+  .search-group-label{font-size:10.5px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--gold-soft); margin-bottom:8px;}
 
   ::-webkit-scrollbar{display:none;}
 </style>
@@ -352,13 +422,57 @@
     <!-- BILAN -->
     <section class="view" id="view-bilan">
       <h2 class="section-title" id="t_bilan_title"></h2>
+
+      <div class="bilan-section-label" id="t_bilan_tasks_label"></div>
       <div class="kpi-row">
         <div class="kpi"><div class="kpi-num" id="kpiTotal">0</div><div class="kpi-label" id="t_kpi_total"></div></div>
         <div class="kpi"><div class="kpi-num" id="kpiRate">0%</div><div class="kpi-label" id="t_kpi_rate"></div></div>
         <div class="kpi"><div class="kpi-num" id="kpiStreak">0</div><div class="kpi-label" id="t_kpi_streak"></div></div>
       </div>
+      <div class="kpi-row">
+        <div class="kpi small"><div class="kpi-num" id="kpiOk">0</div><div class="kpi-label" id="t_kpi_ok"></div></div>
+        <div class="kpi small"><div class="kpi-num" id="kpiKo">0</div><div class="kpi-label" id="t_kpi_ko"></div></div>
+        <div class="kpi small"><div class="kpi-num" id="kpiMid">0</div><div class="kpi-label" id="t_kpi_mid"></div></div>
+        <div class="kpi small"><div class="kpi-num" id="kpiPending">0</div><div class="kpi-label" id="t_kpi_pending"></div></div>
+      </div>
       <h2 class="section-title" style="font-size:15px;" id="t_axis_breakdown"></h2>
       <div id="axisBars"></div>
+
+      <div class="bilan-section-label" style="margin-top:26px;" id="t_bilan_opp_label"></div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-num" id="kpiOppTotal">0</div><div class="kpi-label" id="t_kpi_opp_total"></div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiOppInterested">0</div><div class="kpi-label" id="t_kpi_opp_interested"></div></div>
+        <div class="kpi"><div class="kpi-num" id="kpiOppDone">0</div><div class="kpi-label" id="t_kpi_opp_done"></div></div>
+      </div>
+      <div class="type-split-row" id="typeSplitRow"></div>
+
+      <h2 class="section-title" style="font-size:15px; margin-top:20px;" id="t_upcoming_title"></h2>
+      <div class="entry-list" id="upcomingList"></div>
+    </section>
+
+    <!-- OPPORTUNITÉS -->
+    <section class="view" id="view-opp">
+      <h2 class="section-title" id="t_opp_title"></h2>
+      <p class="section-sub" id="t_opp_sub"></p>
+
+      <button class="btn-search" onclick="openSearchSheet()" id="t_opp_search_btn"></button>
+
+      <div class="entry-list" id="oppList" style="margin-top:16px;"></div>
+
+      <div class="card" style="margin-top:18px;">
+        <label id="t_opp_label_title"></label>
+        <input type="text" id="oppTitle" />
+        <label id="t_opp_label_org"></label>
+        <input type="text" id="oppOrg" />
+        <label id="t_opp_label_type"></label>
+        <select id="oppType">
+          <option value="roster" id="t_opp_type_roster_opt"></option>
+          <option value="tender" id="t_opp_type_tender_opt"></option>
+        </select>
+        <label id="t_opp_label_deadline"></label>
+        <input type="date" id="oppDeadline" />
+        <button class="btn-primary" id="t_opp_btn_add" onclick="addOpportunity()"></button>
+      </div>
     </section>
   </main>
 
@@ -373,6 +487,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
       <span id="t_nav_semaine"></span>
     </button>
+    <button class="navbtn" data-view="opp" onclick="showView('opp')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span id="t_nav_opp"></span>
+    </button>
     <button class="navbtn" data-view="journal" onclick="showView('journal')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h7M9 13h7M9 17h4"/></svg>
       <span id="t_nav_journal"></span>
@@ -383,6 +501,16 @@
     </button>
   </nav>
 </div>
+
+<div class="sheet-overlay" id="searchSheetOverlay" onclick="if(event.target===this) closeSearchSheet()">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3 id="t_search_sheet_title"></h3>
+    <div class="sheet-sub" id="t_search_sheet_sub"></div>
+    <div id="searchLinks"></div>
+  </div>
+</div>
+
 
 <div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this) closeSheet()">
   <div class="sheet">
@@ -418,6 +546,12 @@ const STR = {
     filter_all:"Tous",
     bilan_title:"Tableau de bord",
     kpi_total:"TÂCHES LOGUÉES", kpi_rate:"TAUX DE RÉUSSITE", kpi_streak:"JOURS ACTIFS",
+    kpi_ok:"✅ FAITES", kpi_ko:"❌ NON FAITES", kpi_mid:"🟡 PARTIELLES", kpi_pending:"⬜ EN ATTENTE",
+    bilan_tasks_label:"Suivi quotidien", bilan_opp_label:"Opportunités",
+    kpi_opp_total:"PISTES SUIVIES", kpi_opp_interested:"★ INTÉRESSÉ", kpi_opp_done:"✓ POSTULÉ / FAIT",
+    type_roster_label:"Rosters", type_tender_label:"Appels d'offres",
+    upcoming_title:"Échéances à ne pas oublier",
+    empty_upcoming:"Aucune échéance dans les 30 prochains jours.",
     axis_breakdown:"Répartition par axe",
     empty_today:"Aucune tâche pour aujourd'hui.<br>Ajoute ta première tâche ci-dessus ☝️",
     empty_prev:"Rien avant aujourd'hui pour l'instant.",
@@ -425,6 +559,20 @@ const STR = {
     sheet_sub:"Sous-objectifs et phase associée",
     treated_label:"traitées aujourd'hui",
     axis_label_short:"Axe",
+    nav_opp:"Cibles",
+    opp_title:"Opportunités",
+    opp_sub:"Coche celles qui t'intéressent, fixe une échéance si tu en as une : la couleur t'indique le niveau d'urgence.",
+    opp_search_btn:"🔍 Chercher de nouvelles opportunités",
+    opp_label_title:"Intitulé", opp_label_org:"Organisme", opp_label_deadline:"Échéance (si connue)",
+    opp_label_type:"Type", opp_type_roster:"Roster", opp_type_tender:"Appel d'offres",
+    opp_btn_add:"＋ Ajouter une opportunité",
+    search_sheet_title:"Où chercher",
+    search_sheet_sub:"Ouvre ces pages officielles pour repérer de nouvelles opportunités (rosters, appels, bourses).",
+    search_group_rosters:"Rosters (inscription permanente)",
+    search_group_tenders:"Appels d'offres consultant individuel (STC)",
+    search_hint:"Astuce gratuite : chaque dimanche, demande aussi à Claude en chat « cherche de nouvelles opportunités pour mon profil » — ajoute ensuite ici ce qui t'intéresse.",
+    urgency_urgent:"Urgent", urgency_soon:"Bientôt", urgency_far:"loin", urgency_none:"Sans échéance", urgency_done:"Fait", urgency_days:"j",
+    opp_mark_done:"✓ Fait", opp_mark_undone:"Marquer fait",
     lang_name:"Français"
   },
   en: {
@@ -449,6 +597,12 @@ const STR = {
     filter_all:"All",
     bilan_title:"Dashboard",
     kpi_total:"TASKS LOGGED", kpi_rate:"SUCCESS RATE", kpi_streak:"ACTIVE DAYS",
+    kpi_ok:"✅ DONE", kpi_ko:"❌ NOT DONE", kpi_mid:"🟡 PARTIAL", kpi_pending:"⬜ PENDING",
+    bilan_tasks_label:"Daily tracking", bilan_opp_label:"Opportunities",
+    kpi_opp_total:"TRACKED LEADS", kpi_opp_interested:"★ INTERESTED", kpi_opp_done:"✓ APPLIED / DONE",
+    type_roster_label:"Rosters", type_tender_label:"Tenders",
+    upcoming_title:"Deadlines not to miss",
+    empty_upcoming:"No deadline in the next 30 days.",
     axis_breakdown:"Breakdown by axis",
     empty_today:"No task for today yet.<br>Add your first task above ☝️",
     empty_prev:"Nothing before today yet.",
@@ -456,6 +610,20 @@ const STR = {
     sheet_sub:"Sub-goals and associated phase",
     treated_label:"handled today",
     axis_label_short:"Axis",
+    nav_opp:"Targets",
+    opp_title:"Opportunities",
+    opp_sub:"Check the ones you're interested in, set a deadline if you have one: the color shows the urgency level.",
+    opp_search_btn:"🔍 Search for new opportunities",
+    opp_label_title:"Title", opp_label_org:"Organization", opp_label_deadline:"Deadline (if known)",
+    opp_label_type:"Type", opp_type_roster:"Roster", opp_type_tender:"Tender",
+    opp_btn_add:"＋ Add an opportunity",
+    search_sheet_title:"Where to look",
+    search_sheet_sub:"Open these official pages to spot new opportunities (rosters, calls, scholarships).",
+    search_group_rosters:"Rosters (standing registration)",
+    search_group_tenders:"Individual consultant tenders (STC)",
+    search_hint:"Free tip: every Sunday, also ask Claude in chat \"find new opportunities for my profile\" — then add here whatever interests you.",
+    urgency_urgent:"Urgent", urgency_soon:"Soon", urgency_far:"far", urgency_none:"No deadline", urgency_done:"Done", urgency_days:"d",
+    opp_mark_done:"✓ Done", opp_mark_undone:"Mark done",
     lang_name:"English"
   }
 };
@@ -616,7 +784,31 @@ function applyLanguage(){
   document.getElementById('t_kpi_total').textContent = t('kpi_total');
   document.getElementById('t_kpi_rate').textContent = t('kpi_rate');
   document.getElementById('t_kpi_streak').textContent = t('kpi_streak');
+  document.getElementById('t_kpi_ok').textContent = t('kpi_ok');
+  document.getElementById('t_kpi_ko').textContent = t('kpi_ko');
+  document.getElementById('t_kpi_mid').textContent = t('kpi_mid');
+  document.getElementById('t_kpi_pending').textContent = t('kpi_pending');
+  document.getElementById('t_bilan_tasks_label').textContent = t('bilan_tasks_label');
+  document.getElementById('t_bilan_opp_label').textContent = t('bilan_opp_label');
+  document.getElementById('t_kpi_opp_total').textContent = t('kpi_opp_total');
+  document.getElementById('t_kpi_opp_interested').textContent = t('kpi_opp_interested');
+  document.getElementById('t_kpi_opp_done').textContent = t('kpi_opp_done');
+  document.getElementById('t_upcoming_title').textContent = t('upcoming_title');
   document.getElementById('t_axis_breakdown').textContent = t('axis_breakdown');
+
+  document.getElementById('t_nav_opp').textContent = t('nav_opp');
+  document.getElementById('t_opp_title').textContent = t('opp_title');
+  document.getElementById('t_opp_sub').textContent = t('opp_sub');
+  document.getElementById('t_opp_search_btn').textContent = t('opp_search_btn');
+  document.getElementById('t_opp_label_title').textContent = t('opp_label_title');
+  document.getElementById('t_opp_label_org').textContent = t('opp_label_org');
+  document.getElementById('t_opp_label_deadline').textContent = t('opp_label_deadline');
+  document.getElementById('t_opp_label_type').textContent = t('opp_label_type');
+  document.getElementById('t_opp_type_roster_opt').textContent = t('opp_type_roster');
+  document.getElementById('t_opp_type_tender_opt').textContent = t('opp_type_tender');
+  document.getElementById('t_opp_btn_add').textContent = t('opp_btn_add');
+  document.getElementById('t_search_sheet_title').textContent = t('search_sheet_title');
+  document.getElementById('t_search_sheet_sub').textContent = t('search_sheet_sub');
 
   updatePhaseBadge();
   populateAxisSelect();
@@ -628,6 +820,7 @@ function applyLanguage(){
   renderRecent();
   renderJournal();
   renderBilan();
+  renderOpportunities();
 }
 function updatePhaseBadge(){
   const p = PHASE_INFO.P1;
@@ -643,6 +836,7 @@ function showView(name){
   if(name==='semaine'){ renderToday(); renderRecent(); }
   if(name==='journal') renderJournal();
   if(name==='bilan') renderBilan();
+  if(name==='opp') renderOpportunities();
   window.scrollTo(0,0);
 }
 
@@ -811,11 +1005,18 @@ function renderJournal(){
 function renderBilan(){
   const treated = entries.filter(e=>e.status!=='pending').length;
   const ok = entries.filter(e=>e.status==='ok').length;
+  const ko = entries.filter(e=>e.status==='ko').length;
+  const mid = entries.filter(e=>e.status==='mid').length;
+  const pending = entries.filter(e=>e.status==='pending').length;
   const rate = treated ? Math.round(ok/treated*100) : 0;
   const days = new Set(entries.map(e=>e.date)).size;
   document.getElementById('kpiTotal').textContent = entries.length;
   document.getElementById('kpiRate').textContent = rate+'%';
   document.getElementById('kpiStreak').textContent = days;
+  document.getElementById('kpiOk').textContent = ok;
+  document.getElementById('kpiKo').textContent = ko;
+  document.getElementById('kpiMid').textContent = mid;
+  document.getElementById('kpiPending').textContent = pending;
 
   const counts = AXES.map((a,i)=>entries.filter(e=>e.axisIdx===i).length);
   const max = Math.max(1, ...counts);
@@ -824,7 +1025,165 @@ function renderBilan(){
       <div class="bar-label"><span>${i+1}. ${a.title[lang]}</span><span>${counts[i]}</span></div>
       <div class="bar-track"><div class="bar-fill" style="width:${counts[i]/max*100}%; background:${a.color}"></div></div>
     </div>`).join('');
+
+  /* --- Opportunities stats --- */
+  const oppTotal = opportunities.length;
+  const oppInterested = opportunities.filter(o=>o.interested).length;
+  const oppDone = opportunities.filter(o=>o.done).length;
+  document.getElementById('kpiOppTotal').textContent = oppTotal;
+  document.getElementById('kpiOppInterested').textContent = oppInterested;
+  document.getElementById('kpiOppDone').textContent = oppDone;
+
+  const rosterCount = opportunities.filter(o=>o.type!=='tender').length;
+  const tenderCount = opportunities.filter(o=>o.type==='tender').length;
+  document.getElementById('typeSplitRow').innerHTML = `
+    <div class="type-split roster"><span class="type-split-label">${t('type_roster_label')}</span><span class="type-split-num">${rosterCount}</span></div>
+    <div class="type-split tender"><span class="type-split-label">${t('type_tender_label')}</span><span class="type-split-num">${tenderCount}</span></div>`;
+
+  const upcoming = opportunities
+    .filter(o => !o.done && o.deadline)
+    .map(o => ({o, days: Math.ceil((new Date(o.deadline) - new Date(todayStr())) / 86400000)}))
+    .filter(x => x.days >= 0 && x.days <= 30)
+    .sort((a,b) => a.days - b.days);
+  document.getElementById('upcomingList').innerHTML = upcoming.length
+    ? upcoming.map(x => oppCard(x.o)).join('')
+    : `<div class="empty-state">${t('empty_upcoming')}</div>`;
 }
+
+/* ============ OPPORTUNITÉS ============ */
+const SEARCH_LINKS_ROSTERS = [
+  {label:{fr:"Banque mondiale — eConsultant / STEP", en:"World Bank — eConsultant / STEP"}, url:"https://www.worldbank.org/en/about/careers/programs-and-internships/consultant-opportunities"},
+  {label:{fr:"UNDP — ExpRes Roster & carrières", en:"UNDP — ExpRes Roster & careers"}, url:"https://estm.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1"},
+  {label:{fr:"Union Africaine — base de consultants", en:"African Union — consultant database"}, url:"https://au.int/en/bids"},
+  {label:{fr:"AfDB — Consultant Management System", en:"AfDB — Consultant Management System"}, url:"https://www.afdb.org/en/projects-and-operations/procurement"},
+  {label:{fr:"UNESCO — opportunités d'experts", en:"UNESCO — expert opportunities"}, url:"https://careers.unesco.org/"},
+  {label:{fr:"FAO — Digital Information Specialist Roster", en:"FAO — Digital Information Specialist Roster"}, url:"https://www.fao.org/employment/en/"},
+  {label:{fr:"OMS — Data & Digital Health Roster", en:"WHO — Data & Digital Health Roster"}, url:"https://careers.who.int/"},
+  {label:{fr:"UN Technology Bank for LDCs — roster STI", en:"UN Technology Bank for LDCs — STI roster"}, url:"https://www.un.org/technologybank/"},
+];
+const SEARCH_LINKS_TENDERS = [
+  {label:{fr:"Banque mondiale — eConsultant2 (STC)", en:"World Bank — eConsultant2 (STC)"}, url:"https://worldbankgroup.csod.com/ux/ats/careersite/1/home?c=worldbankgroup"},
+  {label:{fr:"UNDP Jobs — Individual Contractor", en:"UNDP Jobs — Individual Contractor"}, url:"https://jobs.undp.org/"},
+  {label:{fr:"UNOPS Jobs", en:"UNOPS Jobs"}, url:"https://jobs.unops.org/"},
+  {label:{fr:"ITU — Consultancy vacancies", en:"ITU — Consultancy vacancies"}, url:"https://www.itu.int/en/careers/Pages/vacancies.aspx"},
+];
+
+const OPP_KEY = "boussole_opportunities_v1";
+const DEFAULT_OPPS = [
+  {id:1001, title:"Roster UNESCO — Sciences Naturelles", org:"UNESCO", type:"roster", deadline:"", interested:true, done:true, custom:false},
+  {id:1002, title:"SASDP-5 (INGSA-Afrique)", org:"INGSA", type:"tender", deadline:"2026-08-17", interested:true, done:false, custom:false},
+  {id:1003, title:"Roster eConsultant / STEP", org:"Banque mondiale", type:"roster", deadline:"", interested:true, done:false, custom:false},
+  {id:1004, title:"ExpRes Roster", org:"UNDP", type:"roster", deadline:"", interested:true, done:false, custom:false},
+  {id:1005, title:"Base de données consultants", org:"Union Africaine", type:"roster", deadline:"", interested:false, done:false, custom:false},
+  {id:1006, title:"Consultant Management System", org:"AfDB", type:"roster", deadline:"", interested:false, done:false, custom:false},
+  {id:1007, title:"Digital Information Specialist Roster (AGROVOC/AGRIS)", org:"FAO", type:"roster", deadline:"2026-09-30", interested:true, done:false, custom:false},
+  {id:1008, title:"Data and Digital Health Specialist Roster", org:"OMS (WHO)", type:"roster", deadline:"", interested:true, done:false, custom:false},
+  {id:1009, title:"Roster consultants STI — Technology Needs Assessment", org:"UN Technology Bank for LDCs", type:"roster", deadline:"", interested:true, done:false, custom:false},
+];
+function loadOpps(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(OPP_KEY));
+    if(saved && saved.length) return saved;
+  }catch(e){}
+  saveOpps(DEFAULT_OPPS);
+  return DEFAULT_OPPS.slice();
+}
+function saveOpps(list){ localStorage.setItem(OPP_KEY, JSON.stringify(list)); }
+let opportunities = loadOpps();
+
+function urgencyOf(o){
+  if(o.done) return {cls:'done', label:t('urgency_done')};
+  if(!o.deadline) return {cls:'none', label:t('urgency_none')};
+  const days = Math.ceil((new Date(o.deadline) - new Date(todayStr())) / 86400000);
+  if(days < 0) return {cls:'none', label:t('urgency_none')};
+  if(days <= 7) return {cls:'urgent', label:`${t('urgency_urgent')} · ${days}${t('urgency_days')}`};
+  if(days <= 30) return {cls:'soon', label:`${t('urgency_soon')} · ${days}${t('urgency_days')}`};
+  return {cls:'far', label:`${days}${t('urgency_days')} (${t('urgency_far')})`};
+}
+function toggleInterested(id){
+  const o = opportunities.find(x=>x.id===id);
+  if(!o) return;
+  o.interested = !o.interested;
+  saveOpps(opportunities); renderOpportunities();
+}
+function toggleDone(id){
+  const o = opportunities.find(x=>x.id===id);
+  if(!o) return;
+  o.done = !o.done;
+  saveOpps(opportunities); renderOpportunities();
+}
+function setOppDeadline(id, val){
+  const o = opportunities.find(x=>x.id===id);
+  if(!o) return;
+  o.deadline = val;
+  saveOpps(opportunities); renderOpportunities();
+}
+function deleteOpp(id){
+  opportunities = opportunities.filter(o=>o.id!==id);
+  saveOpps(opportunities); renderOpportunities();
+}
+function addOpportunity(){
+  const title = document.getElementById('oppTitle').value.trim();
+  const org = document.getElementById('oppOrg').value.trim();
+  const deadline = document.getElementById('oppDeadline').value;
+  const type = document.getElementById('oppType').value;
+  if(!title){ document.getElementById('oppTitle').focus(); return; }
+  opportunities.unshift({id:Date.now(), title, org, type, deadline, interested:true, done:false, custom:true});
+  saveOpps(opportunities);
+  document.getElementById('oppTitle').value='';
+  document.getElementById('oppOrg').value='';
+  document.getElementById('oppDeadline').value='';
+  renderOpportunities();
+}
+function typeBadge(o){
+  const isRoster = o.type !== 'tender';
+  const label = isRoster ? t('opp_type_roster') : t('opp_type_tender');
+  return `<span class="type-badge ${isRoster?'roster':'tender'}">${label}</span>`;
+}
+function oppCard(o){
+  const u = urgencyOf(o);
+  return `<div class="opp-card ${u.cls}">
+    <div class="opp-top">
+      <div class="opp-star ${o.interested?'on':''}" onclick="toggleInterested(${o.id})">${o.interested?'★':'☆'}</div>
+      <div class="opp-body">
+        <div class="opp-title">${o.title}</div>
+        <div class="opp-org">${o.org||''} ${typeBadge(o)}</div>
+      </div>
+      <button class="opp-del" onclick="deleteOpp(${o.id})">×</button>
+    </div>
+    <div class="opp-bottom">
+      <input type="date" class="opp-deadline-input" value="${o.deadline||''}" onchange="setOppDeadline(${o.id}, this.value)" />
+      <span class="urgency-badge ${u.cls}">${u.label}</span>
+      <button class="opp-done-btn ${o.done?'active':''}" onclick="toggleDone(${o.id})">${o.done?t('opp_mark_done'):t('opp_mark_undone')}</button>
+    </div>
+  </div>`;
+}
+function renderOpportunities(){
+  const list = document.getElementById('oppList');
+  if(!list) return;
+  const sorted = opportunities.slice().sort((a,b)=>{
+    if(a.done !== b.done) return a.done ? 1 : -1;
+    const da = a.deadline ? new Date(a.deadline).getTime() : Infinity;
+    const db = b.deadline ? new Date(b.deadline).getTime() : Infinity;
+    return da - db;
+  });
+  list.innerHTML = sorted.map(oppCard).join('');
+}
+function searchLinkRow(l){
+  return `<div class="search-link" onclick="window.open('${l.url}','_blank')">
+      <span>${l.label[lang]}</span><span class="arrow">↗</span>
+    </div>`;
+}
+function openSearchSheet(){
+  document.getElementById('searchLinks').innerHTML =
+    `<div class="search-group-label">${t('search_group_rosters')}</div>` +
+    SEARCH_LINKS_ROSTERS.map(searchLinkRow).join('') +
+    `<div class="search-group-label" style="margin-top:14px;">${t('search_group_tenders')}</div>` +
+    SEARCH_LINKS_TENDERS.map(searchLinkRow).join('') +
+    `<div class="search-hint">${t('search_hint')}</div>`;
+  document.getElementById('searchSheetOverlay').classList.add('active');
+}
+function closeSearchSheet(){ document.getElementById('searchSheetOverlay').classList.remove('active'); }
 
 /* ============ RITUAL CARD ============ */
 function toggleRitual(){
